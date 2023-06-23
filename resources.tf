@@ -1,6 +1,6 @@
 resource "digitalocean_domain" "domain" {
   name       = var.domain
-  ip_address = data.http.get_local_ip.body
+  ip_address = data.http.get_local_ip.response_body
   lifecycle { ignore_changes = [ip_address] }
 }
 
@@ -9,7 +9,7 @@ resource "digitalocean_record" "record" {
   domain     = var.domain
   name       = each.value
   type       = "A"
-  value      = data.http.get_local_ip.body
+  value      = data.http.get_local_ip.response_body
   ttl        = var.default_ttl
   depends_on = [digitalocean_domain.domain]
 }
